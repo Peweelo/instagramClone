@@ -1,0 +1,69 @@
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id              Int @id @default(autoincrement())
+  email           String @unique
+  name            String
+  username        String
+  image           String?
+  hashedPassword  String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+
+  comment Comment[]
+  accounts Account[]
+  Posts Post[]
+}
+
+model Post {
+  id              Int @unique @default(autoincrement())
+  title           String
+  userId          Int @id
+  likes           Int
+  user    User    @relation(fields: [userId], references: [id])
+
+  comments Comment[]
+  @@index([userId])
+}
+model Comment {
+  id        Int   @id @default(autoincrement())
+  text      String
+  createdAt DateTime @default(now())
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  Int
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    Int
+
+  commentId String?
+
+  @@index([authorId])
+  @@index([postId])
+}
+model Account {
+  id                Int  @id @default(autoincrement()) @map("_id") 
+  userId            Int 
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? 
+  access_token      String? 
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? 
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
