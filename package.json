@@ -10,9 +10,11 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
+    "@next-auth/prisma-adapter": "^0.4.4-canary.81",
     "@prisma/client": "^5.3.1",
     "bcrypt": "^5.1.1",
     "next": "13.5.4",
+    "next-auth": "^4.23.2",
     "prisma": "^5.3.1",
     "react": "^18",
     "react-dom": "^18",
