@@ -6,9 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
+    "@prisma/client": "^5.3.1",
     "bcrypt": "^5.1.1",
     "next": "13.5.4",
     "prisma": "^5.3.1",
