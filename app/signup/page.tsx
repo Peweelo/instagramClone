@@ -1,8 +1,11 @@
 'use client'
 
+import { Toaster, toast } from 'sonner'
 import styles from './page.module.css'
 import { useState, useRef } from 'react'
+
 function RegisterPage() {
+	const emailInputValue = useRef<HTMLInputElement>(null)
 	const [loginErrorMessage, setLoginErrorMessage] = useState('')
 	const [loginInputValue, setLoginInputValue] = useState('')
 	const [passwordInputValue, setPasswordInputValue] = useState('')
@@ -19,7 +22,7 @@ function RegisterPage() {
 			setLoginErrorMessage('')
 		}
 	}
-	const passwordInputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+	const passwordInputHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
 		setPasswordInputValue(event.target.value)
 
 		if (event.target.value.length <= 5) {
@@ -30,6 +33,36 @@ function RegisterPage() {
 	}
 	const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault()
+
+		if (emailInputValue.current !== null) {
+			const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+			if (re.test(emailInputValue.current.value) === false) {
+				toast.error('Please provide a correct email!')
+				return
+			}
+
+			const userData = {
+				email: emailInputValue.current.value,
+				login: loginInputValue,
+				password: passwordInputValue,
+			}
+
+			try {
+				const response = await fetch('../api/register', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(userData),
+				})
+				const body = await response.json()
+				toast.success('You created your account!')
+			} catch (error) {
+				toast.error('an error occurred! Please try again later')
+				console.log(error)
+			}
+		}
 	}
 
 	return (
@@ -49,6 +82,7 @@ function RegisterPage() {
 							</label>
 							<div className="mt-2">
 								<input
+									ref={emailInputValue}
 									id="email"
 									name="email"
 									type="email"
@@ -81,11 +115,6 @@ function RegisterPage() {
 								<label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
 									Password
 								</label>
-								<div className="text-sm">
-									<a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
-										Forgot password?
-									</a>
-								</div>
 							</div>
 							<div className="mt-2">
 								<input
@@ -114,21 +143,11 @@ function RegisterPage() {
 							</button>
 						</div>
 					</form>
-
-					<p className="mt-5 text-center text-sm text-gray-500">
-						Not a member?
-						<a href="#" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500 pl-2">
-							Register now!
-						</a>
-					</p>
 				</div>
 			</div>
+			<Toaster richColors />
 		</div>
 	)
 }
 
 export default RegisterPage
-function elseif() {
-	throw new Error('Function not implemented.')
-}
-

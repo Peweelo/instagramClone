@@ -1,4 +1,4 @@
-import NextAuth, { NextAuthOptions } from "next-auth";
+import NextAuth, { NextAuthOptions, getServerSession } from 'next-auth'
 import prisma from '../../../libs/prismadb'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import CredentialsProvider from 'next-auth/providers/credentials'
@@ -47,6 +47,7 @@ const authOptions: NextAuthOptions = {
 	},
 	debug: process.env.NODE_ENV === 'development',
 }
+export const getAuthSession = () => getServerSession(authOptions)
 
-const handler = NextAuth(authOptions);
-export { handler as GET, handler as POST };
+const handler = NextAuth(authOptions)
+export { handler as GET, handler as POST }
