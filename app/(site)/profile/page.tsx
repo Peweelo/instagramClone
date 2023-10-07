@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGear, faUserGroup } from '@fortawesome/free-solid-svg-icons'
 
-export const fetchUserData = async () => {
+async function fetchUserData() {
 	const response = await import('../../api/fetchUserData/route')
 
 	return (await response.GET()).json()
@@ -25,17 +25,14 @@ async function ProfilePage() {
 				</Link>
 			</div>
 			<div className={styles.profileinfo}>
-				<img
-					className={`h-20 w-20  rounded-full ${styles.img}`}
-					src={image}
-				/>
+				<img className={`h-20 w-20  rounded-full ${styles.img}`} src={image} />
 				<p className={`text-white ${styles.username}`}>{username}</p>
 				<Link href="/profile/edit" className={`text-white ${styles.edit}`}>
 					Edit Profile
 				</Link>
 			</div>
 			<div className={styles.underline}></div>
-			<div className={styles.stats} >
+			<div className={styles.stats}>
 				<div>
 					<p className={styles.name}>Posts:</p>
 					<p className={styles.stat}>0</p>
