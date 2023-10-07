@@ -27,7 +27,7 @@
     display: grid;
     grid-template-rows: 50% 50%;
     grid-template-columns: auto 1fr;
-    grid-gap: 0 .5em;
+    grid-gap: 0 1.5em;
 }
 
 .img {

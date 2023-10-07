@@ -1,16 +1,15 @@
-import Link from 'next/link'
-import { authOptions } from '@/app/authOptions'
-import { getServerSession } from 'next-auth'
+'use client'
 
+import Link from 'next/link'
+import { useSession } from 'next-auth/react'
 import styles from './Navbar.module.css'
+import {useMemo, useCallback} from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHouse, faMagnifyingGlass, faPlus, faCompass, faUser, faGear } from '@fortawesome/free-solid-svg-icons'
 
-const Navbar = async () => {
-	const session = await getServerSession(authOptions)
-
-	console.log(session);
-
+const Navbar = () => {
+	const { data: session, status } = useSession()
+	
 	return (
 		<>
 			<nav className={styles.nav}>
@@ -45,7 +44,7 @@ const Navbar = async () => {
 								<img
 									className="h-6 w-6 d  rounded-full"
 									src={
-										session?.user.image
+										session?.user.image !== undefined
 											? session?.user.image
 											: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
 									}
