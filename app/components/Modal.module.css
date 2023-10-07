@@ -1,0 +1,13 @@
+.modalbackground {
+    background-color: rgba(38,38,38,.3);
+}
+.container {
+    border-top: 1px solid rgb(75, 75, 75);
+    border-right: 1px solid rgb(75, 75, 75);
+    border-left: 1px solid rgb(75, 75, 75);
+}
+.inputs {
+    border-bottom: 1px solid rgb(75, 75, 75);
+    border-right: 1px solid rgb(75, 75, 75);
+    border-left: 1px solid rgb(75, 75, 75);
+}
