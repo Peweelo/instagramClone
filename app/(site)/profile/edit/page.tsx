@@ -7,7 +7,7 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { useState, useEffect } from 'react'
 import Modal from '../../../components/Modal'
 import { useSession } from 'next-auth/react'
-
+import { toast, Toaster } from 'sonner'
 const editProfilePage = () => {
 	const [sessionData, setSessionData] = useState<any>(null)
 	const [open, setOpen] = useState<boolean>(false)
@@ -37,17 +37,22 @@ const editProfilePage = () => {
 			},
 			body: JSON.stringify({ userId, imageUrl: url }),
 		})
+
 		if (!response.ok) {
+			let message: any
+			Object.values(await response.json()).map(e => {
+				message = e
+			})
+			toast.error(message)
 			throw new Error(`HTTP error! status: ${response.status}`)
 		}
 
-		update({
+		await update({
 			image: url,
 		})
 
-		setTimeout(() => {
-			location.reload()
-		}, 750)
+		location.reload()
+		toast.success('successfully changed users picture!')
 	}
 
 	const modalHandler = () => {
@@ -87,6 +92,7 @@ const editProfilePage = () => {
 			) : (
 				<p>Loading</p>
 			)}
+			<Toaster richColors />
 		</>
 	)
 }

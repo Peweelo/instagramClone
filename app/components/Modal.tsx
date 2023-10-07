@@ -4,11 +4,11 @@ import { Dialog, Transition } from '@headlessui/react'
 import styles from './Modal.module.css'
 type ModalProps = {
 	onModalClose: () => void
-  imageHandler: (url: string) => void
+	imageHandler: (url: string) => void
 	isOpen: boolean
 }
 
-export default function Modal({ onModalClose, imageHandler,isOpen }: ModalProps) {
+export default function Modal({ onModalClose, imageHandler, isOpen }: ModalProps) {
 	const cancelButtonRef = useRef(null)
 	const imageUrlInput = useRef<HTMLInputElement>(null)
 	const [error, setError] = useState<boolean>(false)
@@ -20,7 +20,7 @@ export default function Modal({ onModalClose, imageHandler,isOpen }: ModalProps)
 			request.send()
 			request.onload = function () {
 				if (request.status == 200) {
-          imageHandler(url)
+					imageHandler(url)
 					setError(false)
 				} else {
 					setError(true)

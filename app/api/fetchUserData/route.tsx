@@ -14,3 +14,16 @@ export async function GET() {
 
 	return NextResponse.json({ message: user }, { status: 200 })
 }
+
+export async function POST(req: Request) {
+	const userName = await req.json()
+
+
+	const user = await prisma.user.findUnique({
+		where: {
+			username: userName,
+		},
+	})
+
+	return NextResponse.json({ message: user }, { status: 200 })
+}

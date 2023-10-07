@@ -3,13 +3,13 @@
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 import styles from './Navbar.module.css'
-import {useMemo, useCallback} from 'react'
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHouse, faMagnifyingGlass, faPlus, faCompass, faUser, faGear } from '@fortawesome/free-solid-svg-icons'
 
 const Navbar = () => {
 	const { data: session, status } = useSession()
-	
+
 	return (
 		<>
 			<nav className={styles.nav}>

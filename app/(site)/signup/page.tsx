@@ -57,7 +57,7 @@ function RegisterPage() {
 					},
 					body: JSON.stringify(userData),
 				})
-				const body = await response.json()
+
 				toast.success('You created your account!')
 			} catch (error) {
 				toast.error('an error occurred! Please try again later')

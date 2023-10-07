@@ -54,11 +54,13 @@ export const authOptions: NextAuthOptions = {
 			}
 
 			if (user) {
+
 				return {
 					...token,
 					id: user.id,
 					email: user.email,
 					image: user.image,
+					username: token.username
 				}
 			}
 			return token
@@ -70,6 +72,7 @@ export const authOptions: NextAuthOptions = {
 				user: {
 					email: session.user.email,
 					image: token.picture,
+					username: token.username
 				},
 			}
 		},
