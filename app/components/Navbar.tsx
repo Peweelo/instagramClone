@@ -9,7 +9,7 @@ import { faHouse, faMagnifyingGlass, faPlus, faCompass, faUser, faGear } from '@
 const Navbar = async () => {
 	const session = await getServerSession(authOptions)
 
-
+	console.log(session);
 
 	return (
 		<>

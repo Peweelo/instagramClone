@@ -50,6 +50,7 @@ export const authOptions: NextAuthOptions = {
 			if (trigger === 'update') {
 				console.log('update')
 				token.image = session.image
+				token.picture = session.image
 			}
 
 			if (user) {
@@ -63,13 +64,12 @@ export const authOptions: NextAuthOptions = {
 			return token
 		},
 
-		async session({ session, token}) {
+		async session({ session, token }) {
 			return {
 				...session,
 				user: {
-
-					image: token.image,
-					email: token.email,
+					email: session.user.email,
+					image: token.picture,
 				},
 			}
 		},
