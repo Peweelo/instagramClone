@@ -5,43 +5,22 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import FollowButton from './FollowButton'
 import Link from 'next/link'
 import styles from './UsersProfile.module.css'
-import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 
 type PropsType = {
-	userName: string
+	userData: any
 }
 
-const UsersProfile = ({ userName }: PropsType) => {
+const UsersProfile = ({ userData }: PropsType) => {
 	const { data: session } = useSession()
-	const [sessionData, setSessionData] = useState<any>({})
-	const [isLoading, setLoading] = useState<boolean>(true)
-	const [followersList, setFollowersList] = useState<any>([])
 	let isAlreadyFollowing: boolean = false
-	useEffect(() => {
-		fetch('../api/fetchUserData', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify(userName),
-		})
-			.then(response => response.json())
-			.then(data => {
-				setSessionData(data.message.user)
-				setFollowersList(data.message.followersId)
-				setLoading(false)
-			})
-	}, [])
 
-	const { username, image, following, followers, email } = sessionData!
-	console.log(session);
-	followersList.forEach((element: number) => {
+	const { username, image, following, followers, email, id } = userData.user!
+	userData.followersId.forEach((element: any) => {
 		if (element === session?.user.id) {
 			isAlreadyFollowing = true
 		}
 	})
-	if (isLoading) return <p className="text-white wrapper ">Loading users data</p>
 
 	return (
 		<div className={`${styles.container} wrapper`}>
@@ -64,9 +43,9 @@ const UsersProfile = ({ userName }: PropsType) => {
 				) : (
 					<>
 						{isAlreadyFollowing ? (
-							<p className={styles.edit}>u are already following that person</p>
+							<p className={styles.edit}>Stop Following</p>
 						) : (
-							<FollowButton classes={'edit'} usersEmail={session?.user.email} followedEmail={email} />
+							<FollowButton classes={'edit'} usersId={session?.user.id!} followedId={id} />
 						)}
 					</>
 				)}

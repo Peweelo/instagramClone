@@ -1,24 +1,30 @@
 'use client'
 import { toast, Toaster } from 'sonner'
 import styles from './FollowButton.module.css'
+import { useRouter } from 'next/navigation'
 type PropsTypes = {
-	usersEmail: string | undefined
-	followedEmail: string
+	usersId: Number
+	followedId: Number
 	classes: string
 }
 
-const FollowButton = ({ usersEmail, followedEmail, classes }: PropsTypes) => {
+const FollowButton = ({ usersId, followedId, classes }: PropsTypes) => {
+	const router = useRouter()
 	const FollowHandler = async () => {
-		const response = await fetch('../api/followHandler', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({ usersEmail, followedEmail }),
-		})
+		if (usersId === undefined) {
+			router.push('/login')
+		} else {
+			const response = await fetch('../api/followHandler', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ usersId, followedId }),
+			})
 
-		console.log(await response.json())
-		toast.success('succesffully followed a user!')
+			console.log(await response.json())
+			toast.success('succesffully followed a user!')
+		}
 	}
 
 	return (

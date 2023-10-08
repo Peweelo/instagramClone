@@ -4,11 +4,11 @@ import prisma from '../../libs/prismadb'
 export async function POST(req: Request) {
 	const body = await req.json()
 
-	const { usersEmail, followedEmail } = body
+	const { usersId, followedId } = body
 
 	const addingFollowerToUser = await prisma.user.update({
 		where: {
-			email: followedEmail,
+			id: followedId,
 		},
 		data: {
 			followers: { increment: 1 },
@@ -20,7 +20,7 @@ export async function POST(req: Request) {
 	}
 	const addingFollowingToUser = await prisma.user.update({
 		where: {
-			email: usersEmail,
+			id: usersId,
 		},
 		data: {
 			following: { increment: 1 },

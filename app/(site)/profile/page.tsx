@@ -46,6 +46,7 @@ async function ProfilePage() {
 					<p className={styles.stat}>{followers}</p>
 				</div>
 			</div>
+			<Link className='text-white' href="/auth/signout">Sign Out</Link>
 		</div>
 	)
 }

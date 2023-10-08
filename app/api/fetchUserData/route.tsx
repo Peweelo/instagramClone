@@ -15,8 +15,9 @@ export async function GET() {
 	return NextResponse.json({ message: user }, { status: 200 })
 }
 
-export async function POST(req: Request) {
-	const userName = await req.json()
+export async function POST(req: string) {
+	const userName: string = req
+	
 	let followersId: any = []
 
 	const user = await prisma.user.findUnique({
@@ -33,7 +34,7 @@ export async function POST(req: Request) {
 	Object.values(listoffollowers).map((follow: any) => {
 		followersId.push(follow.FollowersId)
 	})
-	console.log(followersId);
+	console.log(followersId)
 
-	return NextResponse.json({ message: {user,followersId} }, { status: 200 })
+	return NextResponse.json({ message: { user, followersId } }, { status: 200 })
 }

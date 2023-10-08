@@ -9,6 +9,7 @@ type ModalProps = {
 }
 
 export default function Modal({ onModalClose, imageHandler, isOpen }: ModalProps) {
+	const imageUrlFile = useRef<HTMLInputElement>(null)
 	const cancelButtonRef = useRef(null)
 	const imageUrlInput = useRef<HTMLInputElement>(null)
 	const [error, setError] = useState<boolean>(false)
@@ -27,6 +28,15 @@ export default function Modal({ onModalClose, imageHandler, isOpen }: ModalProps
 				}
 			}
 		}
+	}
+	const test = (e: React.ChangeEvent<HTMLInputElement>) => {
+		if (e.target.files !== null) {
+			const selectedImage = e.target.files[0]
+			const url = URL.createObjectURL(selectedImage)
+			console.log(url);
+		}
+
+		console.log(imageUrlFile.current?.value)
 	}
 
 	return (
@@ -78,6 +88,15 @@ export default function Modal({ onModalClose, imageHandler, isOpen }: ModalProps
 														id="login"
 														name="login"
 														type="text"
+														className={`block w-full rounded-md border-0 py-1.5  px-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:outline-none focus:ring-indigo-600 sm:text-sm sm:leading-6 bg-blac`}
+													/>
+													<input
+														ref={imageUrlFile}
+														id="image"
+														name="image"
+														accept=".jpg, .jpeg, .png"
+														type="file"
+														onChange={test}
 														className={`block w-full rounded-md border-0 py-1.5  px-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:outline-none focus:ring-indigo-600 sm:text-sm sm:leading-6 bg-blac`}
 													/>
 												</div>
