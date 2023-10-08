@@ -1,6 +1,12 @@
 .edit {
-    cursor: pointer;
-    padding-top: 0.2em;
-    grid-area: 2/2/2/2;
-    color: white;
+	cursor: pointer;
+	padding-top: 0.2em;
+	grid-area: 2/2/2/2;
+	color: white;
+}
+.disable {
+	cursor: pointer;
+	padding-top: 0.2em;
+	grid-area: 2/2/2/2;
+	color: gray;
 }

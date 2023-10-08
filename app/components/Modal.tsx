@@ -13,6 +13,8 @@ export default function Modal({ onModalClose, imageHandler, isOpen }: ModalProps
 	const cancelButtonRef = useRef(null)
 	const imageUrlInput = useRef<HTMLInputElement>(null)
 	const [error, setError] = useState<boolean>(false)
+	const [file, setFile] = useState<Blob>(new Blob())
+
 	const changeImageHandler = () => {
 		if (imageUrlInput.current !== null && imageUrlInput.current.value !== '') {
 			const url = imageUrlInput.current?.value
@@ -29,14 +31,24 @@ export default function Modal({ onModalClose, imageHandler, isOpen }: ModalProps
 			}
 		}
 	}
-	const test = (e: React.ChangeEvent<HTMLInputElement>) => {
-		if (e.target.files !== null) {
-			const selectedImage = e.target.files[0]
-			const url = URL.createObjectURL(selectedImage)
-			console.log(url);
-		}
 
-		console.log(imageUrlFile.current?.value)
+	const handler = (e: React.ChangeEvent<HTMLInputElement>) => {
+		if (e.target.files !== null) {
+			setFile(e.target.files[0])
+			test()
+		}
+	}
+	const test = () => {
+		const formData = new FormData()
+		formData.append('file', file)
+
+		fetch(`http://freeimage.host/api/1/upload/?key=6d207e02198a847aa98d0a2a901485a5&`, {
+			method: 'POST',
+			body: formData,
+			headers: {
+				'Access-Control-Allow-Origin' : 'no-cors'
+			}
+		}).then(res => console.log(res.json()))
 	}
 
 	return (
@@ -96,7 +108,7 @@ export default function Modal({ onModalClose, imageHandler, isOpen }: ModalProps
 														name="image"
 														accept=".jpg, .jpeg, .png"
 														type="file"
-														onChange={test}
+														onChange={handler}
 														className={`block w-full rounded-md border-0 py-1.5  px-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:outline-none focus:ring-indigo-600 sm:text-sm sm:leading-6 bg-blac`}
 													/>
 												</div>
