@@ -3,7 +3,6 @@ import prisma from '../../libs/prismadb'
 export async function POST(req: Request) {
 	const { userId, imageUrl } = await req.json()
 
-	console.log(userId, imageUrl)
 
 	const response = await fetch(imageUrl).catch(() => {
 		return NextResponse.json({ error: 'Error validating image URL' }, { status: 400 })

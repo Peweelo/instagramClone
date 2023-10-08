@@ -2,7 +2,7 @@
 
 import { faGear, faUserGroup } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-
+import FollowButton from './FollowButton'
 import Link from 'next/link'
 import styles from './UsersProfile.module.css'
 import { useEffect, useState } from 'react'
@@ -15,7 +15,9 @@ type PropsType = {
 const UsersProfile = ({ userName }: PropsType) => {
 	const { data: session } = useSession()
 	const [sessionData, setSessionData] = useState<any>({})
-
+	const [isLoading, setLoading] = useState<boolean>(true)
+	const [followersList, setFollowersList] = useState<any>([])
+	let isAlreadyFollowing: boolean = false
 	useEffect(() => {
 		fetch('../api/fetchUserData', {
 			method: 'POST',
@@ -23,15 +25,24 @@ const UsersProfile = ({ userName }: PropsType) => {
 				'Content-Type': 'application/json',
 			},
 			body: JSON.stringify(userName),
-		}).then(response => response.json())
-		.then(data => setSessionData(data.message))
+		})
+			.then(response => response.json())
+			.then(data => {
+				setSessionData(data.message.user)
+				setFollowersList(data.message.followersId)
+				setLoading(false)
+			})
 	}, [])
-	
-	const { username, image, following, followers,email } = sessionData!
 
-	console.log(session?.user.email);
+	const { username, image, following, followers, email } = sessionData!
+	console.log(session);
+	followersList.forEach((element: number) => {
+		if (element === session?.user.id) {
+			isAlreadyFollowing = true
+		}
+	})
+	if (isLoading) return <p className="text-white wrapper ">Loading users data</p>
 
-	console.log(email)
 	return (
 		<div className={`${styles.container} wrapper`}>
 			<div className={styles.upside}>
@@ -51,7 +62,13 @@ const UsersProfile = ({ userName }: PropsType) => {
 						Edit Profile
 					</Link>
 				) : (
-					<p className={`text-white ${styles.edit}`}>Follow</p>
+					<>
+						{isAlreadyFollowing ? (
+							<p className={styles.edit}>u are already following that person</p>
+						) : (
+							<FollowButton classes={'edit'} usersEmail={session?.user.email} followedEmail={email} />
+						)}
+					</>
 				)}
 			</div>
 			<div className={styles.underline}></div>

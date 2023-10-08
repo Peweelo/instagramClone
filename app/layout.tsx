@@ -16,7 +16,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 		<html lang="en">
 			<Provider>
 				<body className={inter.className}>
-					<Navbar></Navbar>
+					<Navbar />
 					{children}
 				</body>
 			</Provider>

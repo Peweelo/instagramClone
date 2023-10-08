@@ -38,7 +38,7 @@
 .edit {
     padding-top: 0.2em;
     grid-area: 2/2/2/2;
-
+    color: white;
 }
 .underline {
     border-bottom: 1px solid rgb(75, 75, 75);

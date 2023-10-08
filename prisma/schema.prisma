@@ -1,7 +1,7 @@
 datasource db {
-  provider     = "mysql"
+  provider     = "mongodb"
   url          = env("DATABASE_URL")
-  relationMode = "prisma"
+
 }
 
 generator client {
@@ -9,7 +9,7 @@ generator client {
 }
 
 model User {
-  id              Int @id @default(autoincrement())
+  id              String @id @default(cuid()) @map("_id")
   email           String @unique
   login           String @unique
   username        String @unique
@@ -26,14 +26,27 @@ model User {
   comment Comment[]
   accounts Account[]
   Posts Post[]
+  ListOfFollowers ListOfFollowers[]
+  ListOfFollowing ListOfFollowing[]
 }
 
 
+model ListOfFollowers {
+  FollowersId String @id @map("_id")
+  userId String 
+  user    User    @relation(fields: [userId], references: [id])
+}
+model ListOfFollowing {
+  FollowingId String @id @map("_id")
+  userId String
+  user    User    @relation(fields: [userId], references: [id])
+}
+
 
 model Post {
-  id              Int @unique @default(autoincrement())
+  id              String @default(cuid()) @map("_id") @id
   title           String
-  userId          Int @id
+  userId          String 
   likes           Int
   user    User    @relation(fields: [userId], references: [id])
 
@@ -41,13 +54,13 @@ model Post {
   @@index([userId])
 }
 model Comment {
-  id        Int   @id @default(autoincrement())
+  id        String    @id @default(cuid()) @map("_id")
   text      String
   createdAt DateTime @default(now())
   author    User     @relation(fields: [authorId], references: [id])
-  authorId  Int
+  authorId  String
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
-  postId    Int
+  postId    String
 
   commentId String?
 
@@ -55,8 +68,8 @@ model Comment {
   @@index([postId])
 }
 model Account {
-  id                Int  @id @default(autoincrement()) @map("_id") 
-  userId            Int 
+  id                String @id @default(cuid()) @map("_id")
+  userId            String 
   type              String
   provider          String
   providerAccountId String

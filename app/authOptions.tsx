@@ -48,7 +48,7 @@ export const authOptions: NextAuthOptions = {
 	callbacks: {
 		async jwt({ token, user, trigger, session }) {
 			if (trigger === 'update') {
-				console.log('update')
+
 				token.image = session.image
 				token.picture = session.image
 			}
@@ -72,7 +72,7 @@ export const authOptions: NextAuthOptions = {
 				user: {
 					email: session.user.email,
 					image: token.picture,
-					username: token.username
+					id: token.id
 				},
 			}
 		},

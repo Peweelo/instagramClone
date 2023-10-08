@@ -17,13 +17,23 @@ export async function GET() {
 
 export async function POST(req: Request) {
 	const userName = await req.json()
-
+	let followersId: any = []
 
 	const user = await prisma.user.findUnique({
 		where: {
 			username: userName,
 		},
 	})
+	const listoffollowers = await prisma.ListOfFollowers.findMany({
+		where: {
+			userId: user.id,
+		},
+	})
 
-	return NextResponse.json({ message: user }, { status: 200 })
+	Object.values(listoffollowers).map((follow: any) => {
+		followersId.push(follow.FollowersId)
+	})
+	console.log(followersId);
+
+	return NextResponse.json({ message: {user,followersId} }, { status: 200 })
 }

@@ -1,0 +1,6 @@
+.edit {
+    cursor: pointer;
+    padding-top: 0.2em;
+    grid-area: 2/2/2/2;
+    color: white;
+}

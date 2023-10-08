@@ -3,12 +3,12 @@
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 import styles from './Navbar.module.css'
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHouse, faMagnifyingGlass, faPlus, faCompass, faUser, faGear } from '@fortawesome/free-solid-svg-icons'
 
 const Navbar = () => {
 	const { data: session, status } = useSession()
+	
 
 	return (
 		<>
@@ -43,11 +43,7 @@ const Navbar = () => {
 							<Link href="/profile">
 								<img
 									className="h-6 w-6 d  rounded-full"
-									src={
-										session?.user.image !== undefined
-											? session?.user.image
-											: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
-									}
+									src={session?.user.image}
 									alt="profile picture"
 								/>
 								<span className={styles.span}>Profile</span>

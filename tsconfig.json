@@ -22,6 +22,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/libs/prismadb.js", "app/provider.js", "app/authOptions.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/libs/prismadb.js", "app/provider.js", "app/authOptions.tsx", "app/components/UsersProfile.tsx"],
   "exclude": ["node_modules"]
 }
