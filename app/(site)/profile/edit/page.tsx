@@ -30,28 +30,13 @@ const editProfilePage = () => {
 	}, [])
 
 	const changingImageHandler = async (url: string) => {
-		const response = await fetch('../../../api/changeUserImage', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({ userId, imageUrl: url }),
-		})
-
-		if (!response.ok) {
-			let message: any
-			Object.values(await response.json()).map(e => {
-				message = e
-			})
-			toast.error(message)
-			throw new Error(`HTTP error! status: ${response.status}`)
-		}
-
 		await update({
 			image: url,
 		})
 
-		location.reload()
+		setTimeout(() => {
+			location.reload()
+		}, 1000)
 		toast.success('successfully changed users picture!')
 	}
 

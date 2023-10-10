@@ -30,7 +30,7 @@ export async function POST(req: Request) {
 	if (!addingFollowerToUser || !addingFollowingToUser) {
 		return NextResponse.json({ error: 'Something went wrong!' }, { status: 400 })
 	}
-	const addingtolist = await prisma.ListOfFollowing.create({
+	 await prisma.ListOfFollowing.create({
 		data: {
 			FollowingId: addingFollowerToUser.id,
 			user: {
@@ -41,7 +41,7 @@ export async function POST(req: Request) {
 		},
 	})
 
-	const tolist = await prisma.ListOfFollowers.create({
+	await prisma.ListOfFollowers.create({
 		data: {
 			FollowersId: addingFollowingToUser.id,
 			user: {
@@ -52,9 +52,5 @@ export async function POST(req: Request) {
 		},
 	})
 	
-
-	if (!addingtolist) {
-		return NextResponse.json({ error: 'Something went wrong!' }, { status: 400 })
-	}
 	return NextResponse.json({ message: 'Successfully followed an user!' }, { status: 200 })
 }

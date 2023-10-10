@@ -1,5 +1,6 @@
 import { Fragment, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
+import { UploadButton } from './UploadThingComponent'
 
 import styles from './Modal.module.css'
 type ModalProps = {
@@ -9,47 +10,8 @@ type ModalProps = {
 }
 
 export default function Modal({ onModalClose, imageHandler, isOpen }: ModalProps) {
-	const imageUrlFile = useRef<HTMLInputElement>(null)
 	const cancelButtonRef = useRef(null)
-	const imageUrlInput = useRef<HTMLInputElement>(null)
 	const [error, setError] = useState<boolean>(false)
-	const [file, setFile] = useState<Blob>(new Blob())
-
-	const changeImageHandler = () => {
-		if (imageUrlInput.current !== null && imageUrlInput.current.value !== '') {
-			const url = imageUrlInput.current?.value
-			const request = new XMLHttpRequest()
-			request.open('GET', url, true)
-			request.send()
-			request.onload = function () {
-				if (request.status == 200) {
-					imageHandler(url)
-					setError(false)
-				} else {
-					setError(true)
-				}
-			}
-		}
-	}
-
-	const handler = (e: React.ChangeEvent<HTMLInputElement>) => {
-		if (e.target.files !== null) {
-			setFile(e.target.files[0])
-			test()
-		}
-	}
-	const test = () => {
-		const formData = new FormData()
-		formData.append('file', file)
-
-		fetch(`http://freeimage.host/api/1/upload/?key=6d207e02198a847aa98d0a2a901485a5&`, {
-			method: 'POST',
-			body: formData,
-			headers: {
-				'Access-Control-Allow-Origin' : 'no-cors'
-			}
-		}).then(res => console.log(res.json()))
-	}
 
 	return (
 		<Transition.Root show={isOpen} as={Fragment}>
@@ -94,41 +56,27 @@ export default function Modal({ onModalClose, imageHandler, isOpen }: ModalProps
 												</p>
 											</div>
 											<div>
-												<div className="mt-2">
-													<input
-														ref={imageUrlInput}
-														id="login"
-														name="login"
-														type="text"
-														className={`block w-full rounded-md border-0 py-1.5  px-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:outline-none focus:ring-indigo-600 sm:text-sm sm:leading-6 bg-blac`}
-													/>
-													<input
-														ref={imageUrlFile}
-														id="image"
-														name="image"
-														accept=".jpg, .jpeg, .png"
-														type="file"
-														onChange={handler}
-														className={`block w-full rounded-md border-0 py-1.5  px-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:outline-none focus:ring-indigo-600 sm:text-sm sm:leading-6 bg-blac`}
-													/>
-												</div>
+												<div className="mt-2"></div>
 											</div>
 										</div>
 									</div>
 								</div>
-								<div className={`${styles.inputs} bg-black px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6`}>
-									<button
-										type="button"
-										className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-										onClick={() => {
-											changeImageHandler()
-										}}>
-										Change
-									</button>
+								<div className={`${styles.inputs} bg-black px-4 py-3  sm:px-6`}>
+									<UploadButton
+										endpoint="imageUploader"
+										onClientUploadComplete={res => {
+											console.log(res![0].url)
+											imageHandler(res![0].url)
+										}}
+										onUploadError={(error: Error) => {
+											// Do something with the error.
+											alert(`ERROR! ${error.message}`)
+										}}
+									/>
 									{error === true ? <p className="text-white text-center pt-2.5">image doesn't exist</p> : <></>}
 									<button
 										type="button"
-										className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+										className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0"
 										onClick={() => {
 											onModalClose()
 										}}

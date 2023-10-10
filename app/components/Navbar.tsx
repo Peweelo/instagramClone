@@ -5,10 +5,16 @@ import { useSession } from 'next-auth/react'
 import styles from './Navbar.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHouse, faMagnifyingGlass, faPlus, faCompass, faUser, faGear } from '@fortawesome/free-solid-svg-icons'
+import { useState } from 'react'
+import CreatePostModal from './CreatePostModal'
 
 const Navbar = () => {
 	const { data: session, status } = useSession()
-	
+	const [isOpen, setIsOpen] = useState<boolean>(false)
+
+	const modalHandler = () => {
+		setIsOpen(prevState => !prevState)
+	}
 
 	return (
 		<>
@@ -28,10 +34,10 @@ const Navbar = () => {
 							</Link>
 						</div>
 						<div className={styles.navItem}>
-							<Link href="/create">
+							<a onClick={modalHandler}>
 								<FontAwesomeIcon className={styles.icon} icon={faPlus} />
 								<span className={styles.span}>Create</span>
-							</Link>
+							</a>
 						</div>
 						<div className={styles.navItem}>
 							<Link href="/explore">
@@ -41,11 +47,7 @@ const Navbar = () => {
 						</div>
 						<div className={styles.navItem}>
 							<Link href="/profile">
-								<img
-									className="h-6 w-6 d  rounded-full"
-									src={session?.user.image}
-									alt="profile picture"
-								/>
+								<img className="h-6 w-6 d  rounded-full" src={session?.user.image} alt="profile picture" />
 								<span className={styles.span}>Profile</span>
 							</Link>
 						</div>
@@ -57,6 +59,7 @@ const Navbar = () => {
 					</Link>
 				</div>
 			</nav>
+			<CreatePostModal isOpen={isOpen} onModalClose={modalHandler} />
 		</>
 	)
 }
