@@ -46,8 +46,10 @@ model ListOfFollowing {
 model Post {
   id              String @default(cuid()) @map("_id") @id
   title           String
+  image           String
   userId          String 
   likes           Int
+  createdAt       DateTime  @default(now())
   user    User    @relation(fields: [userId], references: [id])
 
   comments Comment[]

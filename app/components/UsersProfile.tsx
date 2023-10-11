@@ -54,7 +54,7 @@ const UsersProfile = ({ userData }: PropsType) => {
 			<div className={styles.stats}>
 				<div>
 					<p className={styles.name}>Posts:</p>
-					<p className={styles.stat}>0</p>
+					<p className={styles.stat}>{userData.posts.length}</p>
 				</div>
 				<div>
 					<p className={styles.name}>Following:</p>
@@ -64,6 +64,19 @@ const UsersProfile = ({ userData }: PropsType) => {
 					<p className={styles.name}>Followers:</p>
 					<p className={styles.stat}>{followers}</p>
 				</div>
+			</div>
+			<div className="flex justify-between min-h-[20vh] flex-wrap gap-1">
+				{userData.posts.length == 0 ? (
+					<p>User has no post yet.</p>
+				) : (
+					userData.posts.map((post: any) => {
+						return (
+							<div className="text-white w-[32%] sm:h-[200px] lg:h-[200px] bg-white" key={post.id}>
+								<img src={post.image} className="h-[100%] w-full" />
+							</div>
+						)
+					})
+				)}
 			</div>
 		</div>
 	)

@@ -12,12 +12,18 @@ export async function GET() {
 		},
 	})
 
-	return NextResponse.json({ message: user }, { status: 200 })
+	const posts = await prisma.post.findMany({
+		where: {
+			userId: session?.user?.id,
+		},
+	})
+
+	return NextResponse.json({ message: user, posts }, { status: 200 })
 }
 
 export async function POST(req: string) {
 	const userName: string = req
-	
+
 	let followersId: any = []
 
 	const user = await prisma.user.findUnique({
@@ -30,11 +36,15 @@ export async function POST(req: string) {
 			userId: user.id,
 		},
 	})
-
+	const posts = await prisma.post.findMany({
+		where: {
+			userId: user.id,
+		},
+	})
 	Object.values(listoffollowers).map((follow: any) => {
 		followersId.push(follow.FollowersId)
 	})
 	console.log(followersId)
 
-	return NextResponse.json({ message: { user, followersId } }, { status: 200 })
+	return NextResponse.json({ message: { user, followersId,posts } }, { status: 200 })
 }
