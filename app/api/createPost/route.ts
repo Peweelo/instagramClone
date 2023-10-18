@@ -4,7 +4,7 @@ import { authOptions } from '@/app/authOptions'
 import { getServerSession } from 'next-auth'
 
 export async function POST(req: Request) {
-	const { title, url } = await req.json()
+	const { title, url, description } = await req.json()
 	const session = await getServerSession(authOptions)
 	const userId = session?.user?.id
 	const postCreate = await prisma.post.create({
@@ -12,6 +12,7 @@ export async function POST(req: Request) {
 			title,
 			image: url,
 			likes: 0,
+			description,
 			userId,
 		},
 	})

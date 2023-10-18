@@ -16,6 +16,8 @@ const CreatePostModal = ({ onModalClose, isOpen }: PropsTypes) => {
 	const [imageUrl, setImageUrl] = useState<string>('')
 	const [titleErrorMessage, setTitleErrorMessage] = useState('')
 	const [titleInputValue, setTitleInputValue] = useState('')
+	const [descriptionValue, setDescriptionValue] = useState('')
+
 	const titleInputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setTitleInputValue(event.target.value)
 
@@ -30,7 +32,11 @@ const CreatePostModal = ({ onModalClose, isOpen }: PropsTypes) => {
 		setImageUrl(url)
 		setIsModalOpen(true)
 	}
+	const descriptionInputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setDescriptionValue(event.target.value)
+	}
 
+	
 	const createPostHandler = async (url: string, title: string) => {
 		const response = await fetch('../api/createPost', {
 			method: 'POST',
@@ -143,8 +149,8 @@ const CreatePostModal = ({ onModalClose, isOpen }: PropsTypes) => {
 											</label>
 											<div className="mt-2">
 												<input
-													onChange={titleInputHandler}
-													value={titleInputValue}
+													onChange={descriptionInputHandler}
+													value={descriptionValue}
 													id="title"
 													name="title"
 													autoComplete="title"
@@ -158,6 +164,18 @@ const CreatePostModal = ({ onModalClose, isOpen }: PropsTypes) => {
 												) : (
 													<></>
 												)}
+												<label htmlFor="title" className="mt-3 block text-base font-medium leading-6 text-white">
+													description
+												</label>
+												<input
+													onChange={titleInputHandler}
+													value={titleInputValue}
+													id="description"
+													name="description"
+													autoComplete="description"
+													required
+													className={`block w-full rounded-md border-0 py-1.5  text-white px-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:outline-none focus:ring-indigo-600 sm:text-sm sm:leading-6 bg-black `}
+												/>
 											</div>
 										</div>
 									</div>

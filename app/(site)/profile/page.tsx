@@ -2,7 +2,7 @@ import styles from './page.module.css'
 import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGear, faUserGroup } from '@fortawesome/free-solid-svg-icons'
-
+import { redirect } from 'next/navigation'
 async function fetchUserData() {
 	const response = await import('../../api/fetchUserData/route')
 
@@ -11,6 +11,10 @@ async function fetchUserData() {
 
 async function ProfilePage() {
 	const userData = await fetchUserData()
+
+	if ((await userData.message) === undefined) {
+		return redirect('/login')
+	}
 	const { username, name, lastname, image, followers, following, posts } = userData.message
 
 	return (
@@ -46,7 +50,7 @@ async function ProfilePage() {
 					<p className={styles.stat}>{followers}</p>
 				</div>
 			</div>
-			<Link className="text-white" href="/auth/signout">
+			<Link className="text-white" href="/api/auth/signout">
 				Sign Out
 			</Link>
 
@@ -57,7 +61,9 @@ async function ProfilePage() {
 					userData.posts.map((post: any) => {
 						return (
 							<div className="text-white w-[32%] sm:h-[200px] lg:h-[200px] bg-white" key={post.id}>
-								<img src={post.image} className="h-[100%] w-full" />
+								<Link href={`/post/${post.id}`}>
+									<img src={post.image} className="h-[100%] w-full" />
+								</Link>
 							</div>
 						)
 					})

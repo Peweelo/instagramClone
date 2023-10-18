@@ -5,7 +5,9 @@ import { getServerSession } from 'next-auth'
 export async function GET() {
 	const session = await getServerSession(authOptions)
 	const email = session?.user?.email
-
+	if (!email) {
+		return NextResponse.json({ error: 'users is not authenticated!' })
+	}
 	const user = await prisma.user.findUnique({
 		where: {
 			email,
@@ -46,5 +48,5 @@ export async function POST(req: string) {
 	})
 	console.log(followersId)
 
-	return NextResponse.json({ message: { user, followersId,posts } }, { status: 200 })
+	return NextResponse.json({ message: { user, followersId, posts } }, { status: 200 })
 }

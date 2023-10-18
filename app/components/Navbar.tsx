@@ -5,7 +5,7 @@ import { useSession } from 'next-auth/react'
 import styles from './Navbar.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHouse, faMagnifyingGlass, faPlus, faCompass, faUser, faGear } from '@fortawesome/free-solid-svg-icons'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import CreatePostModal from './CreatePostModal'
 
 const Navbar = () => {

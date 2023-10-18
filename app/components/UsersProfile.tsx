@@ -72,7 +72,9 @@ const UsersProfile = ({ userData }: PropsType) => {
 					userData.posts.map((post: any) => {
 						return (
 							<div className="text-white w-[32%] sm:h-[200px] lg:h-[200px] bg-white" key={post.id}>
-								<img src={post.image} className="h-[100%] w-full" />
+								<Link href={`/post/${post.id}`}>
+									<img src={post.image} className="h-[100%] w-full" />
+								</Link>
 							</div>
 						)
 					})
