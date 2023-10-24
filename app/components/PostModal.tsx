@@ -1,10 +1,10 @@
+'use client'
+
 import { Fragment, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { UploadButton } from './UploadThingComponent'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faDotCircle, faHeart } from '@fortawesome/free-solid-svg-icons'
 import styles from './PostModal.module.css'
-import Link from 'next/link'
 
 type ModalProps = {
 	onModalClose: () => void
@@ -13,9 +13,24 @@ type ModalProps = {
 	username: string
 	userImage: string
 	likes: number
+	postId: string
 }
 
-function PostModal({ onModalClose, isOpen, image, username, userImage, likes }: ModalProps) {
+function PostModal({ onModalClose, isOpen, image, username, userImage, likes, postId }: ModalProps) {
+	const likePostHandler = async () => {
+		const response = await fetch('../api/likePost', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({ postId: postId }),
+		})
+		if (!response.ok) {
+			throw new Error(`HTTP error! status: ${response.status}`)
+		}
+		const result = await response.json()
+	}
+
 	const cancelButtonRef = useRef(null)
 	console.log(userImage)
 	return (
@@ -27,28 +42,54 @@ function PostModal({ onModalClose, isOpen, image, username, userImage, likes }: 
 				onClose={() => {
 					onModalClose()
 				}}>
-				<div className="fixed inset-0 z-[-10] w-screen overflow-y-auto h-full">
+				<Transition.Child
+					as={Fragment}
+					enter="ease-out duration-300"
+					enterFrom="opacity-0"
+					enterTo="opacity-100"
+					leave="ease-in duration-200"
+					leaveFrom="opacity-100"
+					leaveTo="opacity-0">
+					<div className={`${styles.modalbackground} fixed inset-0  bg-opacity-75 transition-opacity`} />
+				</Transition.Child>
+				<div className="fixed inset-0 z-10 w-screen overflow-y-auto h-full">
 					<div className="flex h-full justify-center p-4 text-center">
 						<div className="w-full h-full flex  justify-center items-center">
-							<Dialog.Panel className="relative transform h-[85vh] overflow-hidden rounded-lg bg-black text-left shadow-xl transition-all sm:my-8 w-[65%] flex">
-								<img className="h-full w-[55%] " src={image} />
-								<div className=" h-full w-[45%] flex flex-col">
-									<div className={`${styles.userInfo}`}>
-										<div className="flex">
-											<img className="h-10 w-10 d  rounded-full" src={userImage} />
-											<p className="text-white pl-2">{username}</p>
+							<Transition.Child
+								as={Fragment}
+								enter="ease-out duration-300"
+								enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+								enterTo="opacity-100 translate-y-0 sm:scale-100"
+								leave="ease-in duration-200"
+								leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+								leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
+								<Dialog.Panel
+									className={`relative transform h-[95vh] overflow-hidden rounded-lg bg-black text-left shadow-xl transition-all sm:my-8  flex max-w-[1200px]`}>
+									<img className="h-full w-[55%] " src={image} />
+									<div className=" h-full w-[50%] flex flex-col">
+										<div className={`${styles.userInfo}`}>
+											<div className="flex">
+												<img className="h-10 w-10 d  rounded-full" src={userImage} />
+												<p className="text-white pl-2">{username}</p>
+											</div>
+											<FontAwesomeIcon className="text-white" icon={faDotCircle} />
 										</div>
-										<FontAwesomeIcon className="text-white" icon={faDotCircle} />
+										<div className={`${styles.comments}`}></div>
+										<div className={styles.buttons}>
+											<div className={styles.icons}>
+												<FontAwesomeIcon className={`${styles.icon}`} icon={faHeart} onClick={likePostHandler} />
+												{/* <FontAwesomeIcon className={`${styles.icon}`} icon={faHeart} />
+												<FontAwesomeIcon className={`${styles.icon}`} icon={faHeart} /> */}
+											</div>
+											<p className={`${styles.likes}`}>{`number of likes: ${likes}`}</p>
+										</div>
+										<div className={`${styles.stats}`}>
+											<input className={styles.commentInput} type="text" placeholder="add comment..." />
+											<p className={styles.text}>Send</p>
+										</div>
 									</div>
-									<div className={`${styles.comments}`}></div>
-									<div className={`${styles.stats}`}>
-										<FontAwesomeIcon className={`${styles.icon}`} icon={faHeart} />
-										<p className={`${styles.likes}`}>{`numbers of likes: ${likes}`}</p>
-										<input type='text'/>
-										<p className='text-white'>Send Comment</p>
-									</div>
-								</div>
-							</Dialog.Panel>
+								</Dialog.Panel>
+							</Transition.Child>
 						</div>
 					</div>
 				</div>

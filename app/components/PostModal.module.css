@@ -26,17 +26,43 @@
 	color: white;
 	transition: color 0.3s;
 }
+.buttons {
+	height: auto;
+	padding: 0.5em;
+	border-bottom: 1px solid rgba(75, 75, 75);
+}
 
 .icon:hover {
 	color: red;
 }
 .likes {
-	color: rgb(133, 133, 133);
-	font-size: .9rem;
-	padding-left: .7em;
+	font-size: 0.9rem;
+	padding-left: 0.7em;
+	color: white;
 }
-@media(max-width: 1264px) {
-    .div {
-        display: none;
-    }
+.icons {
+	padding: 0 0 1em 1em;
+	display: flex;
+	align-items: center;
+	gap: 1em;
+}
+.stats {
+	width: 100%;
+	justify-content: space-between;
+	display: flex;
+	align-items: center;
+}
+.commentInput {
+	width: 90%;
+	background-color: transparent;
+	padding: .5em
+}
+
+.text {
+	color: rgb(179, 219, 255);
+}
+@media (max-width: 1264px) {
+	.div {
+		display: none;
+	}
 }
