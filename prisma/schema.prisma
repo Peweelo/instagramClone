@@ -48,7 +48,7 @@ model Post {
   title           String
   image           String
   userId          String
-  description     String
+  description     String?
   likedBy         String[]
   likes           Int
   createdAt       DateTime  @default(now())
