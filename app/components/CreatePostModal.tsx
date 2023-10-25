@@ -36,14 +36,13 @@ const CreatePostModal = ({ onModalClose, isOpen }: PropsTypes) => {
 		setDescriptionValue(event.target.value)
 	}
 
-	
-	const createPostHandler = async (url: string, title: string) => {
+	const createPostHandler = async (url: string, title: string, description: string) => {
 		const response = await fetch('../api/createPost', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify({ url, title }),
+			body: JSON.stringify({ url, title, description }),
 		})
 
 		if (!response.ok) {
@@ -115,7 +114,7 @@ const CreatePostModal = ({ onModalClose, isOpen }: PropsTypes) => {
 											<button
 												onClick={() => {
 													onModalClose()
-													createPostHandler(imageUrl, titleInputValue)
+													createPostHandler(imageUrl, titleInputValue, descriptionValue)
 													setTitleErrorMessage('')
 													setTitleInputValue('')
 													setIsModalOpen(false)

@@ -68,6 +68,7 @@ const DetailedPostPage = ({ params }: any) => {
 				userImage={data.message.profilePicutre}
 				likes={data.message.likes}
 				postId={params.postId}
+				description={data.message.description}
 			/>
 		</>
 	)

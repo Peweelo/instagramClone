@@ -61,6 +61,13 @@
 .text {
 	color: rgb(179, 219, 255);
 }
+.description {
+	color: rgb(177, 177, 177);
+	padding-top: 0.2em;
+	overflow: hidden;
+	max-width: 200px;
+}
+
 
 @media (max-width: 1264px) {
 	.div {

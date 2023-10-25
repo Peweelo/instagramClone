@@ -14,9 +14,10 @@ type ModalProps = {
 	userImage: string
 	likes: number
 	postId: string
+	description: string
 }
 
-function PostModal({ onModalClose, isOpen, image, username, userImage, likes, postId }: ModalProps) {
+function PostModal({ onModalClose, isOpen, image, username, userImage, likes, postId, description }: ModalProps) {
 	const [disable, setDisable] = useState(false)
 	const likePostHandler = async () => {
 		const response = await fetch('../api/likePost', {
@@ -72,7 +73,10 @@ function PostModal({ onModalClose, isOpen, image, username, userImage, likes, po
 										<div className={`${styles.userInfo}`}>
 											<div className="flex">
 												<img className="h-10 w-10 d  rounded-full" src={userImage} />
-												<p className="text-white pl-2">{username}</p>
+												<div className="pl-2 w-full">
+													<p className="text-white">{username}</p>
+													<p className={styles.description}>{description}</p>
+												</div>
 											</div>
 											<FontAwesomeIcon className="text-white" icon={faDotCircle} />
 										</div>
