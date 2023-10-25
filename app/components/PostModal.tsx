@@ -17,6 +17,7 @@ type ModalProps = {
 }
 
 function PostModal({ onModalClose, isOpen, image, username, userImage, likes, postId }: ModalProps) {
+	const [disable, setDisable] = useState(false)
 	const likePostHandler = async () => {
 		const response = await fetch('../api/likePost', {
 			method: 'POST',
@@ -29,6 +30,7 @@ function PostModal({ onModalClose, isOpen, image, username, userImage, likes, po
 			throw new Error(`HTTP error! status: ${response.status}`)
 		}
 		const result = await response.json()
+		setDisable(false)
 	}
 
 	const cancelButtonRef = useRef(null)
@@ -65,8 +67,8 @@ function PostModal({ onModalClose, isOpen, image, username, userImage, likes, po
 								leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
 								<Dialog.Panel
 									className={`relative transform h-[95vh] overflow-hidden rounded-lg bg-black text-left shadow-xl transition-all sm:my-8  flex max-w-[1200px]`}>
-									<img className="h-full w-[55%] " src={image} />
-									<div className=" h-full w-[50%] flex flex-col">
+									<img className="w-[50%] bg-center" src={image} />
+									<div className="w-[50%] flex flex-col">
 										<div className={`${styles.userInfo}`}>
 											<div className="flex">
 												<img className="h-10 w-10 d  rounded-full" src={userImage} />
@@ -77,7 +79,16 @@ function PostModal({ onModalClose, isOpen, image, username, userImage, likes, po
 										<div className={`${styles.comments}`}></div>
 										<div className={styles.buttons}>
 											<div className={styles.icons}>
-												<FontAwesomeIcon className={`${styles.icon}`} icon={faHeart} onClick={likePostHandler} />
+												<button disabled={disable}>
+													<FontAwesomeIcon
+														className={`${styles.icon}`}
+														icon={faHeart}
+														onClick={() => {
+															setDisable(true)
+															likePostHandler()
+														}}
+													/>
+												</button>
 												{/* <FontAwesomeIcon className={`${styles.icon}`} icon={faHeart} />
 												<FontAwesomeIcon className={`${styles.icon}`} icon={faHeart} /> */}
 											</div>

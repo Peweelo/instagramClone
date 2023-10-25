@@ -15,9 +15,10 @@ export async function POST(req: Request) {
 			id: postId,
 		},
 	})
-
+	
 	if (!post) {
-		return
+		console.log('test')
+		return NextResponse.json({ error: 'Something went wrong!' })
 	}
 
 	const user = await prisma.user.findUnique({
@@ -26,8 +27,9 @@ export async function POST(req: Request) {
 		},
 	})
 	if (!user) {
-		return user
+		return NextResponse.json({ error: 'Something went wrong!' })
 	}
+
 	return NextResponse.json({
 		message: {
 			title: post.title,
@@ -35,7 +37,7 @@ export async function POST(req: Request) {
 			description: post.description,
 			image: post.image,
 			username: user.username,
-			profilePicutre: user.image
+			profilePicutre: user.image,
 		},
 	})
 }

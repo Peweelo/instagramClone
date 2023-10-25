@@ -61,6 +61,7 @@
 .text {
 	color: rgb(179, 219, 255);
 }
+
 @media (max-width: 1264px) {
 	.div {
 		display: none;

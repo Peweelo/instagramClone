@@ -5,28 +5,31 @@ import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserGroup, faArrowLeft, faHeart } from '@fortawesome/free-solid-svg-icons'
 import PostModal from '../../../components/PostModal'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 const DetailedPostPage = ({ params }: any) => {
 	const [open, setOpen] = useState<boolean>(false)
-	const fetcher = async (api: string) => {
-		const response = fetch(api, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({ postId: params.postId }),
-		})
+	const [data, setData] = useState<any>()
+	useEffect(() => {
+		const fetchData = async () => {
+			const response = await fetch('../../../api/fetchDetailedPost', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ postId: params.postId }),
+			})
+			const res = await response.json()
+			setData(res)
+		}
 
-		return await (await response).json()
-	}
+		fetchData()
+	}, [])
 	const modalHandler = () => {
 		setOpen(prevState => !prevState)
 	}
-	const { data, error, isLoading } = useSWR('/api/fetchDetailedPost', fetcher)
-
-	if (error) return <div>failed to load</div>
-	if (isLoading) return <div>loading...</div>
+	console.log(data)
+	if (!data) return <div className="text-white">Couldnt load the page</div>
 
 	return (
 		<>
