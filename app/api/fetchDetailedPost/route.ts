@@ -15,9 +15,8 @@ export async function POST(req: Request) {
 			id: postId,
 		},
 	})
-	
+
 	if (!post) {
-		console.log('test')
 		return NextResponse.json({ error: 'Something went wrong!' })
 	}
 
@@ -38,6 +37,7 @@ export async function POST(req: Request) {
 			image: post.image,
 			username: user.username,
 			profilePicutre: user.image,
+			userId: user.id,
 		},
 	})
 }

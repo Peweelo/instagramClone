@@ -141,7 +141,7 @@ const CreatePostModal = ({ onModalClose, isOpen }: PropsTypes) => {
 										</div>
 									</div>
 									<div className={`h-full bg-black ${isModalOpen ? '' : 'hidden'}`}>
-										<img src={imageUrl} className="w-full" />
+										<img src={imageUrl} className="w-full h-[50%]" />
 										<div className="p-3">
 											<label htmlFor="title" className="block text-base font-medium leading-6 text-white">
 												title

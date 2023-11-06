@@ -1,6 +1,12 @@
 .stats {
 	border-bottom: 1px solid rgb(75, 75, 75);
 }
+.info {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: 50%;
+}
 .upside {
 	display: flex;
 	align-items: center;
@@ -16,6 +22,7 @@
 .settings {
 	color: white;
 }
+
 .container {
 	display: flex;
 	flex-direction: column;
@@ -25,7 +32,11 @@
 	color: white;
 	transition: color 0.3s;
 }
-
+.addingComment {
+	height: 100px;
+	width: 100%;
+	background-color: white;
+}
 .heart:hover {
 	color: red;
 }
@@ -58,8 +69,8 @@
 	display: none;
 }
 
-@media (min-width: 768px) {
-	.upside {
+/* @media (min-width: 768px) { */
+	/* .upside {
 		display: none;
 	}
 }
@@ -67,4 +78,4 @@
 	.container {
 		display: block;
 	}
-}
+} */

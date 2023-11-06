@@ -15,7 +15,7 @@ async function ProfilePage() {
 	if ((await userData.message) === undefined) {
 		return redirect('/login')
 	}
-	const { username, name, lastname, image, followers, following, posts } = userData.message
+	const { username,image, followers, following } = userData.message
 
 	return (
 		<div className={`${styles.container} wrapper`}>
@@ -54,7 +54,7 @@ async function ProfilePage() {
 				Sign Out
 			</Link>
 
-			<div className="flex justify-between min-h-[20vh] flex-wrap gap-1">
+			<div className="flex min-h-[20vh] flex-wrap gap-1 items-end">
 				{userData.posts.length == 0 ? (
 					<p className="text-white">You have no posts yet.</p>
 				) : (

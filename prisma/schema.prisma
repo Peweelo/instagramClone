@@ -23,7 +23,6 @@ model User {
   updatedAt       DateTime  @updatedAt
 
 
-  comment Comment[]
   accounts Account[]
   Posts Post[]
   ListOfFollowers ListOfFollowers[]
@@ -54,19 +53,15 @@ model Post {
   createdAt       DateTime  @default(now())
   user    User    @relation(fields: [userId], references: [id])
 
-  comments Comment[]
   @@index([userId])
 }
 model Comment {
   id        String    @id @default(cuid()) @map("_id")
   text      String
   createdAt DateTime @default(now())
-  author    User     @relation(fields: [authorId], references: [id])
+  author    String
   authorId  String
-  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId    String
-
-  commentId String?
 
   @@index([authorId])
   @@index([postId])
