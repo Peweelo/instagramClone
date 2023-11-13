@@ -12,7 +12,6 @@ const editProfilePage = () => {
 	const [sessionData, setSessionData] = useState<any>(null)
 	const [open, setOpen] = useState<boolean>(false)
 	const { data: session, update } = useSession()
-	const userId: string = sessionData?.message.id
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -55,7 +54,7 @@ const editProfilePage = () => {
 						<p className={`text-white ${styles.edit}`}>Edit Profile</p>
 					</div>
 
-					<div className={styles.information}>
+					<div className="w-[85%] mt-[3.5em] mx-auto flex gap-4 flex-col">
 						<div className={styles.picture}>
 							<img
 								className={`${styles.img} h-10 w-10  rounded-full`}
@@ -72,6 +71,17 @@ const editProfilePage = () => {
 							</a>
 						</div>
 						<Modal onModalClose={modalHandler} isOpen={open} imageHandler={changingImageHandler} />
+						<div>
+							<p className="changecolor">change your username</p>
+							<p className="text-gray-500">current: {sessionData.message.username}</p>
+						</div>
+						<div>
+							<p className="changecolor">change your email</p>
+							<p className="text-gray-500">current: {sessionData.message.email}</p>
+						</div>
+						<div>
+							<p className="changecolor">change your password</p>
+						</div>
 					</div>
 				</div>
 			) : (

@@ -3,7 +3,7 @@
 import { faGear, faUserGroup } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import FollowButton from './FollowButton'
-import UnfollowButton from './unfullowButton'
+import UnfollowButton from './UnfullowButton'
 import Link from 'next/link'
 import styles from './UsersProfile.module.css'
 import { useSession } from 'next-auth/react'
