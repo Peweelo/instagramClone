@@ -61,3 +61,9 @@ table {
 html {
 	font-family: 'Roboto', sans-serif
 }
+.bordertop {
+    border-top: 1px solid rgb(75, 75, 75);
+}
+.borderbottom {
+    border-bottom: 1px solid rgb(75, 75, 75);
+}

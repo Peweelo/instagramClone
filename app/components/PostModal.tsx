@@ -7,6 +7,14 @@ import { faDotCircle, faHeart } from '@fortawesome/free-solid-svg-icons'
 import styles from './PostModal.module.css'
 import Link from 'next/link'
 
+type CommentType = {
+	id: string
+	text: string
+	createdAt: Date
+	author: string
+	authorId: string
+	postId: string
+}
 type ModalProps = {
 	onModalClose: () => void
 	isOpen: boolean
@@ -17,15 +25,7 @@ type ModalProps = {
 	postId: string
 	description: string
 	userId: string
-	comments: [] | undefined
-}
-type CommentType = {
-	id: string
-	text: string
-	createdAt: Date
-	author: string
-	authorId: string
-	postId: string
+	message: []
 }
 function PostModal({
 	onModalClose,
@@ -37,9 +37,8 @@ function PostModal({
 	postId,
 	description,
 	userId,
-	comments,
+	message,
 }: ModalProps) {
-	let refDiv = useRef(null)
 	const [commentInputValue, setCommentInputValue] = useState<string>('')
 	const [disable, setDisable] = useState(false)
 
@@ -77,7 +76,12 @@ function PostModal({
 		setDisable(false)
 	}
 	const cancelButtonRef = useRef(null)
+	const commentsArr = message.sort((a: CommentType, b: CommentType) => {
+		const timeA = a.createdAt instanceof Date ? a.createdAt.getTime() : 0
+		const timeB = b.createdAt instanceof Date ? b.createdAt.getTime() : 0
 
+		return timeA - timeB
+	})
 	return (
 		<>
 			<Transition.Root show={true} as={Fragment}>
@@ -124,12 +128,16 @@ function PostModal({
 												<FontAwesomeIcon className="text-white" icon={faDotCircle} />
 											</div>
 											<div className={`${styles.comments}`}>
-												{comments!.message.map((comment: CommentType) => {
+												{[...commentsArr].reverse().map((comment: CommentType) => {
+													const date = new Date(comment.createdAt)
 													return (
-														<div className={styles.comment}>
-															<Link href={`/profile/${comment.author}`} className="text-white">
-																{comment.author}
-															</Link>
+														<div key={comment.id} className={styles.comment}>
+															<div className="flex justify-between">
+																<Link href={`/profile/${comment.author}`} className="text-white">
+																	{comment.author}
+																</Link>
+																<p className="text-gray-500">{date.toLocaleDateString()}</p>
+															</div>
 															<p className="text-white">{comment.text}</p>
 														</div>
 													)

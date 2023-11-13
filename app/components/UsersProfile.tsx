@@ -3,6 +3,7 @@
 import { faGear, faUserGroup } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import FollowButton from './FollowButton'
+import UnfollowButton from './unfullowButton'
 import Link from 'next/link'
 import styles from './UsersProfile.module.css'
 import { useSession } from 'next-auth/react'
@@ -22,20 +23,26 @@ const UsersProfile = ({ userData }: PropsType) => {
 		}
 	})
 
+	const postsArr = userData.posts.sort((a: any, b: any) => {
+		const timeA = a.createdAt instanceof Date ? a.createdAt.getTime() : 0
+		const timeB = b.createdAt instanceof Date ? b.createdAt.getTime() : 0
+
+		return timeA - timeB
+	})
 	return (
-		<div className={`${styles.container} wrapper`}>
-			<div className={styles.upside}>
-				<Link href="/settings" className={styles.settings}>
-					<FontAwesomeIcon className={styles.icon} icon={faGear} />
+		<div className={`h-full wrapper`}>
+			<div className="flex items-center justify-between h-[50px] borderbottom">
+				<Link href="/settings" className="text-white py-[.5em] px-[1em]">
+					<FontAwesomeIcon icon={faGear} />
 				</Link>
 				<p className="text-white">{username}</p>
-				<Link href="/settings" className={styles.settings}>
-					<FontAwesomeIcon className={styles.icon} icon={faUserGroup} />
+				<Link href="/settings" className="text-white py-[.5em] px-[1em]">
+					<FontAwesomeIcon icon={faUserGroup} />
 				</Link>
 			</div>
-			<div className={styles.profileinfo}>
-				<img className={`h-20 w-20  rounded-full ${styles.img}`} src={image} />
-				<p className={`text-white ${styles.username}`}>{username}</p>
+			<div className="w-[80%] grid grid-rows-[50%,50%] grid-cols-[40%,40%] mt-[1.5em] mx-[auto]">
+				<img className="h-20 w-20  rounded-full" src={image} />
+				<p className="text-white pt-[.7em]">{username}</p>
 				{session?.user.email === email ? (
 					<Link href="/profile/edit" className={`text-white ${styles.edit}`}>
 						Edit Profile
@@ -43,35 +50,36 @@ const UsersProfile = ({ userData }: PropsType) => {
 				) : (
 					<>
 						{isAlreadyFollowing ? (
-							<p className={styles.edit}>Stop Following</p>
+							<UnfollowButton classes={'edit'} usersId={session?.user.id!} followedId={id} />
 						) : (
 							<FollowButton classes={'edit'} usersId={session?.user.id!} followedId={id} />
 						)}
 					</>
 				)}
 			</div>
-			<div className={styles.underline}></div>
-			<div className={styles.stats}>
+			<div className="borderbottom h-[40px]"></div>
+			<div className="borderbottom pb-[.7em] flex w-full items-center justify-evenly mt-[.7em]">
 				<div>
-					<p className={styles.name}>Posts:</p>
-					<p className={styles.stat}>{userData.posts.length}</p>
+					<p className="text-gray-500 pb-[.5em]">Posts:</p>
+					<p className="text-white text-center">{userData.posts.length}</p>
 				</div>
 				<div>
-					<p className={styles.name}>Following:</p>
-					<p className={styles.stat}>{following}</p>
+					<p className="text-gray-500 pb-[.5em]">Following:</p>
+					<p className="text-white text-center">{following}</p>
 				</div>
 				<div>
-					<p className={styles.name}>Followers:</p>
-					<p className={styles.stat}>{followers}</p>
+					<p className="text-gray-500 pb-[.5em]">Followers:</p>
+					<p className="text-white text-center">{followers}</p>
 				</div>
 			</div>
-			<div className="flex justify-between min-h-[20vh] flex-wrap gap-1">
+
+			<div className="flex flex-wrap gap-1 justify-start">
 				{userData.posts.length == 0 ? (
-					<p>User has no post yet.</p>
+					<p className="text-white"> no posts yet.</p>
 				) : (
-					userData.posts.map((post: any) => {
+					[...postsArr].reverse().map((post: any) => {
 						return (
-							<div className="text-white w-[32%] sm:h-[200px] lg:h-[200px] bg-white" key={post.id}>
+							<div className="text-white w-[32%] h-[150px] md:h-[200px] bg-white" key={post.id}>
 								<Link href={`/post/${post.id}`}>
 									<img src={post.image} className="h-[100%] w-full" />
 								</Link>
