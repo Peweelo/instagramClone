@@ -10,6 +10,11 @@ import { useSession } from 'next-auth/react'
 import { toast, Toaster } from 'sonner'
 const editProfilePage = () => {
 	const [sessionData, setSessionData] = useState<any>(null)
+	const [loginInputValue, setLoginInputValue] = useState('')
+	const [EmailInputValue, setEmailInputValue] = useState('')
+	const [loginErrorMessage, setLoginErrorMessage] = useState('')
+	const [emailErrorMessage, setEmailErrorMessage] = useState('')
+	const [buttonValue, setButtonValue] = useState<boolean>(true)
 	const [open, setOpen] = useState<boolean>(false)
 	const { data: session, update } = useSession()
 
@@ -43,6 +48,43 @@ const editProfilePage = () => {
 		setOpen(prevState => !prevState)
 	}
 
+	const newLoginHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setLoginInputValue(event.target.value)
+		if (event.target.value !== sessionData.message.username) {
+			setButtonValue(false)
+		} else {
+			setButtonValue(true)
+		}
+		if (event.target.value.length <= 3) {
+			setButtonValue(true)
+			setLoginErrorMessage('Your login is too short! Atleast 4 characters')
+		} else if (event.target.value.length > 20) {
+			setButtonValue(true)
+			setLoginErrorMessage('Your login is too long! Maximum of 20 characters')
+		} else {
+			setButtonValue(false)
+			setLoginErrorMessage('')
+		}
+	}
+
+	const newEmailHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setEmailInputValue(event.target.value)
+		if (event.target.value !== sessionData.message.email) {
+			setButtonValue(false)
+			const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+			if (re.test(event.target.value) === false) {
+				setButtonValue(false)
+				setEmailErrorMessage('your new email in incorrect!')
+				toast.error('Please provide a correct email!')
+				return
+			}
+		} else {
+			setButtonValue(true)
+		}
+	}
+
+	const saveChangesHandler = () => {}
 	return (
 		<>
 			{sessionData ? (
@@ -54,7 +96,8 @@ const editProfilePage = () => {
 						<p className={`text-white ${styles.edit}`}>Edit Profile</p>
 					</div>
 
-					<div className="w-[85%] mt-[3.5em] mx-auto flex gap-4 flex-col">
+					<div className="w-[85%] mt-[2em] md:mt-0 mx-auto flex gap-4 flex-col">
+						<h1 className="text-white mb-1 text-lg">Edit Profile</h1>
 						<div className={styles.picture}>
 							<img
 								className={`${styles.img} h-10 w-10  rounded-full`}
@@ -72,16 +115,47 @@ const editProfilePage = () => {
 						</div>
 						<Modal onModalClose={modalHandler} isOpen={open} imageHandler={changingImageHandler} />
 						<div>
-							<p className="changecolor">change your username</p>
-							<p className="text-gray-500">current: {sessionData.message.username}</p>
+							<p className="text-white text-base mb-2">username</p>
+							<input
+								value={loginInputValue}
+								id="login"
+								name="login"
+								type="login"
+								autoComplete="login"
+								required
+								onChange={newLoginHandler}
+								className={`block w-full rounded-md border-0 py-1.5 text-white px-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-white focus:ring-2 focus:ring-inset focus:outline-none focus:ring-indigo-600 sm:text-sm sm:leading-6 bg-black ${
+									loginErrorMessage !== '' ? 'ring-red-500' : 'border-0'
+								}`}
+								placeholder={sessionData.message.username}
+							/>
+							{loginErrorMessage !== '' ? <p className="pt-1.5 text-red-500 text-sm ">{loginErrorMessage}</p> : <></>}
 						</div>
 						<div>
-							<p className="changecolor">change your email</p>
-							<p className="text-gray-500">current: {sessionData.message.email}</p>
+							<p className="text-white text-base mb-2">email</p>
+							<input
+								value={EmailInputValue}
+								id="email"
+								name="email"
+								type="email"
+								autoComplete="email"
+								required
+								onChange={newEmailHandler}
+								className={`block w-full rounded-md border-0 py-1.5 text-white px-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-white focus:ring-2 focus:ring-inset focus:outline-none focus:ring-indigo-600 sm:text-sm sm:leading-6 bg-black ${
+									emailErrorMessage !== '' ? 'ring-red-500' : 'border-0'
+								} `}
+								placeholder={sessionData.message.email}
+							/>
+							{emailErrorMessage !== '' ? <p className="pt-1.5 text-red-500 text-sm ">{emailErrorMessage}</p> : <></>}
 						</div>
-						<div>
+						{/* <div>
 							<p className="changecolor">change your password</p>
-						</div>
+						</div> */}
+						<button
+							disabled={buttonValue}
+							className="bg-[#0095f6] text-white max-w-[150px] px-4 py-2 rounded-lg mt-4 disabled:bg-[#013c63] disabled:text-gray-500">
+							Save Changes
+						</button>
 					</div>
 				</div>
 			) : (

@@ -1,49 +1,51 @@
 .upside {
-    width: 100%;
-    display: flex;
-    align-items: center;   
-    justify-content: space-between;
-    height: 50px;
-    border-bottom: 1px solid rgb(75, 75, 75);
-    padding: 1em 1em;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	height: 50px;
+	border-bottom: 1px solid rgb(75, 75, 75);
+	padding: 1em 1em;
 }
 .icon {
-
-    font-size: 1.2rem;
+	font-size: 1.2rem;
 }
 .settings {
-    color: white;
+	color: white;
 }
 .edit {
-    margin: 0 auto;
+	margin: 0 auto;
 }
 
 .information {
-    width: 85%;
-    margin: 3.5em auto 0 auto;
+	width: 85%;
+	margin: 3.5em auto 0 auto;
 }
 
 .picture {
-    display: grid;
-    grid-template-rows: 50% 50%;
-    grid-template-columns: auto 1fr;
-    grid-gap: 0 1.5em;
+	display: grid;
+	grid-template-rows: 50% 50%;
+	grid-template-columns: auto 1fr;
+	grid-gap: 0 1.5em;
 }
 
 .img {
-    grid-area: 1/1/2/1;
+	grid-area: 1/1/2/1;
 }
 .username {
-
-    text-align: left;
-    grid-area: 1/2/1/2;
+	text-align: left;
+	grid-area: 1/2/1/2;
 }
 .change {
-    color: #0095F6;
-    font-size: .8rem;
-    font-weight: bold;
-    width: 100%;
-    text-align: left;
-    grid-area: 2/2/2/2;
-
+	color: #0095f6;
+	font-size: 0.8rem;
+	font-weight: bold;
+	width: 100%;
+	text-align: left;
+	grid-area: 2/2/2/2;
+}
+@media (min-width: 768px) {
+	.upside {
+		display: none;
+	}
 }

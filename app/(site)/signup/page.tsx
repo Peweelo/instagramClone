@@ -7,10 +7,10 @@ import Link from 'next/link'
 
 function RegisterPage() {
 	const emailInputValue = useRef<HTMLInputElement>(null)
-	const [loginErrorMessage, setLoginErrorMessage] = useState('')
-	const [loginInputValue, setLoginInputValue] = useState('')
-	const [passwordInputValue, setPasswordInputValue] = useState('')
-	const [passwordErrorMessage, setPasswordErrorMessage] = useState('')
+	const [loginErrorMessage, setLoginErrorMessage] = useState<string>('')
+	const [loginInputValue, setLoginInputValue] = useState<string>('')
+	const [passwordInputValue, setPasswordInputValue] = useState<string>('')
+	const [passwordErrorMessage, setPasswordErrorMessage] = useState<string>('')
 
 	const loginInputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setLoginInputValue(event.target.value)
