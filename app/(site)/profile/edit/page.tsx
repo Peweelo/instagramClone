@@ -10,7 +10,7 @@ import { useSession } from 'next-auth/react'
 import { toast, Toaster } from 'sonner'
 const editProfilePage = () => {
 	const [sessionData, setSessionData] = useState<any>(null)
-	const [loginInputValue, setLoginInputValue] = useState('')
+	const [usernameInputValue, setusernameInputValue] = useState('')
 	const [EmailInputValue, setEmailInputValue] = useState('')
 	const [loginErrorMessage, setLoginErrorMessage] = useState('')
 	const [emailErrorMessage, setEmailErrorMessage] = useState('')
@@ -32,7 +32,7 @@ const editProfilePage = () => {
 			console.error('An error occurred while fetching the data: ', e)
 		})
 	}, [])
-
+	console.log(sessionData)
 	const changingImageHandler = async (url: string) => {
 		await update({
 			image: url,
@@ -49,18 +49,14 @@ const editProfilePage = () => {
 	}
 
 	const newLoginHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setLoginInputValue(event.target.value)
-		if (event.target.value !== sessionData.message.username) {
-			setButtonValue(false)
-		} else {
-			setButtonValue(true)
-		}
+		setusernameInputValue(event.target.value)
+
 		if (event.target.value.length <= 3) {
 			setButtonValue(true)
-			setLoginErrorMessage('Your login is too short! Atleast 4 characters')
+			setLoginErrorMessage('Your username is too short! Atleast 4 characters')
 		} else if (event.target.value.length > 20) {
 			setButtonValue(true)
-			setLoginErrorMessage('Your login is too long! Maximum of 20 characters')
+			setLoginErrorMessage('Your username is too long! Maximum of 20 characters')
 		} else {
 			setButtonValue(false)
 			setLoginErrorMessage('')
@@ -69,22 +65,46 @@ const editProfilePage = () => {
 
 	const newEmailHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setEmailInputValue(event.target.value)
-		if (event.target.value !== sessionData.message.email) {
-			setButtonValue(false)
-			const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+		setButtonValue(false)
+		const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
-			if (re.test(event.target.value) === false) {
-				setButtonValue(false)
-				setEmailErrorMessage('your new email in incorrect!')
-				toast.error('Please provide a correct email!')
-				return
-			}
+		if (re.test(event.target.value) === false) {
+			setButtonValue(false)
+			setEmailErrorMessage('your new email in incorrect!')
 		} else {
-			setButtonValue(true)
+			setEmailErrorMessage('')
 		}
 	}
 
-	const saveChangesHandler = () => {}
+	const saveChangesHandler = () => {
+		const newUsername = usernameInputValue
+		const newEmail = EmailInputValue
+
+		if (newUsername !== sessionData.message.username || newEmail !== sessionData.message.email) {
+			const changeUserData = async () => {
+				const response = await fetch('../../../api/changeUsersData', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({ newUsername, newEmail, id: sessionData.message.id }),
+				})
+				if (!response.ok) {
+					throw new Error(`HTTP error! status: ${response.status}`)
+				}
+				await update({
+					username: newUsername,
+					email: newEmail,
+				})
+
+				toast.success('successfuly changed users data!')
+			}
+
+			changeUserData().catch(e => {
+				console.error('An error occurred while fetching the data: ', e)
+			})
+		}
+	}
 	return (
 		<>
 			{sessionData ? (
@@ -117,11 +137,11 @@ const editProfilePage = () => {
 						<div>
 							<p className="text-white text-base mb-2">username</p>
 							<input
-								value={loginInputValue}
-								id="login"
-								name="login"
-								type="login"
-								autoComplete="login"
+								value={usernameInputValue}
+								id="username"
+								name="username"
+								type="username"
+								autoComplete="username"
 								required
 								onChange={newLoginHandler}
 								className={`block w-full rounded-md border-0 py-1.5 text-white px-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-white focus:ring-2 focus:ring-inset focus:outline-none focus:ring-indigo-600 sm:text-sm sm:leading-6 bg-black ${
@@ -152,6 +172,7 @@ const editProfilePage = () => {
 							<p className="changecolor">change your password</p>
 						</div> */}
 						<button
+							onClick={saveChangesHandler}
 							disabled={buttonValue}
 							className="bg-[#0095f6] text-white max-w-[150px] px-4 py-2 rounded-lg mt-4 disabled:bg-[#013c63] disabled:text-gray-500">
 							Save Changes

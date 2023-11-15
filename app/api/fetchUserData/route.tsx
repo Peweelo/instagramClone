@@ -10,7 +10,7 @@ export async function GET() {
 	}
 	const user = await prisma.user.findUnique({
 		where: {
-			email,
+			id: session.user.id,
 		},
 	})
 
@@ -19,6 +19,8 @@ export async function GET() {
 			userId: session?.user?.id,
 		},
 	})
+
+	console.log(user)
 
 	return NextResponse.json({ message: user, posts }, { status: 200 })
 }
@@ -46,7 +48,6 @@ export async function POST(req: string) {
 	Object.values(listoffollowers).map((follow: any) => {
 		followersId.push(follow.FollowersId)
 	})
-	console.log(followersId)
 
 	return NextResponse.json({ message: { user, followersId, posts } }, { status: 200 })
 }
