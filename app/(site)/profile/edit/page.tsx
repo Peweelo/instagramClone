@@ -32,7 +32,7 @@ const editProfilePage = () => {
 			console.error('An error occurred while fetching the data: ', e)
 		})
 	}, [])
-	console.log(sessionData)
+	
 	const changingImageHandler = async (url: string) => {
 		await update({
 			image: url,
